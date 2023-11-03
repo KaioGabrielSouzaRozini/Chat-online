@@ -32,6 +32,7 @@ socket.on("setup", (state) => {
     if (element != participantId) {
       const para = document.createElement("p");
       para.id = element;
+      para.style.color = state.participantColor[element];
       para.innerText = element;
       list.appendChild(para);
     } else if (element == participantId) {
@@ -49,7 +50,6 @@ socket.on("setup", (state) => {
 
     para.className = "your-message";
     para2.className = "message";
-
     para2.innerText = element;
     para.appendChild(para2);
     chatMessages.appendChild(para);

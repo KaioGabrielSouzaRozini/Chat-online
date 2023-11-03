@@ -1,6 +1,7 @@
 export default function createChat() {
   const state = {
     participantIds: [],
+    participantColor: {},
     chat: [],
   };
   const observers = [];
@@ -47,14 +48,27 @@ export default function createChat() {
 
   function sendMessage(command, id) {
     state.chat.push(command);
-    if(state.chat.length > 50){
-      state.chat.shift()
+    if (state.chat.length > 50) {
+      state.chat.shift();
     }
     notifyAll({
       type: "send-message",
       command: command,
       participantId: id,
     });
+  }
+
+  function colors(command) {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+
+    state.participantColor[command] = {
+      color: color,
+    };
   }
 
   return {
@@ -64,6 +78,7 @@ export default function createChat() {
     setState,
     subscribe,
     notifyAll,
+    colors,
     state,
   };
 }
