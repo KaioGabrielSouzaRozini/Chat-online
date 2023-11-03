@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+.all {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+.participants-all {
+  width: 30%;
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.participants {
+  width: 90%;
+  height: 95%;
+  background-color: grey;
+  border: 2px solid white;
+  border-radius: 20px;
+}
+.chat-all {
+  width: 70%;
+  height: 100vh;
+  background-color: grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.chat {
+  width: 95%;
+  height: 90%;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 30px;
+  overflow: auto;
+}
+.send-messages {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.text {
+  width: 100vh;
+  height: 3vh;
+}
+.send {
+  width: 10vh;
+}
+.message {
+  border-radius: 10px;
+  margin-left: 5px;
+  padding: 3px;
+  background-color: lightblue;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+.my-messages {
+  display: flex;
+  margin-right: 3px;
+  padding: 3px;
+  background-color: lightgreen;
+  border: 1px solid white;
+  border-radius: 10px;
+}
+.my-message {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 3px;
+  height: 3vh;
+  justify-content: end;
+}
+.your-message {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 3px;
+  height: 3vh;
+}
+.teto {
+  height: 1vh;
+}
