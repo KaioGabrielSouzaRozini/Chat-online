@@ -47,6 +47,9 @@ export default function createChat() {
 
   function sendMessage(command, id) {
     state.chat.push(command);
+    if(state.chat.length > 50){
+      state.chat.shift()
+    }
     notifyAll({
       type: "send-message",
       command: command,
