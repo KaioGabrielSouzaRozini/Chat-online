@@ -16,6 +16,7 @@ button.addEventListener("click", () => {
     document.getElementById("text").value,
     participantId
   );
+  document.getElementById("text").value = "";
 });
 
 socket.on("connect", () => {
