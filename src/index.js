@@ -4,10 +4,6 @@ const list = document.getElementById("participants");
 const button = document.getElementById("send");
 const chatMessages = document.getElementById("chat");
 
-const chat = createChat();
-
-const socket = io();
-
 button.addEventListener("click", () => {
   console.log(`participant send-message`);
   const participantId = socket.id;
@@ -19,6 +15,16 @@ button.addEventListener("click", () => {
   document.getElementById("text").value = "";
 });
 
+text.addEventListener("keypress", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    button.click();
+  }
+});
+const chat = createChat();
+
+const socket = io();
+
 socket.on("connect", () => {
   const participantId = socket.id;
   console.log(`participant connected on client with id; ${participantId}`);
@@ -27,19 +33,25 @@ socket.on("connect", () => {
 socket.on("setup", (state) => {
   const participantId = socket.id;
   chat.setState(state);
-
   state["participantIds"].forEach((element) => {
     if (element != participantId) {
       const para = document.createElement("p");
       para.id = element;
-      para.style.color = state.participantColor[element];
+      console.log(
+        element,
+        chat.state.participantColor,
+        chat.state.participantColor[element]
+      );
+      para.style.backgroundColor = chat.state.participantColor[element];
       para.innerText = element;
+      para.className = "listName";
       list.appendChild(para);
     } else if (element == participantId) {
       const para = document.createElement("p");
       para.id = element;
-      para.style.color = "red";
+      para.style.backgroundColor = "lightgreen";
       para.innerText = element;
+      para.className = "listName";
       list.appendChild(para);
     }
   });
@@ -50,7 +62,12 @@ socket.on("setup", (state) => {
 
     para.className = "your-message";
     para2.className = "message";
-    para2.innerText = element;
+    para2.innerText = element[1];
+    if (chat.state.participantColor[element[0]] == undefined) {
+      para2.style.backgroundColor = "lightblue";
+    } else {
+      para2.style.backgroundColor = chat.state.participantColor[element[0]];
+    }
     para.appendChild(para2);
     chatMessages.appendChild(para);
   });
@@ -60,14 +77,18 @@ socket.on("add-participant", (command) => {
   const participantId = socket.id;
   console.log(`Receiving ${command.type} -> ${command.participantId}`);
 
+  chat.addParticipant(command);
+
   if (command.participantId != participantId) {
     const para = document.createElement("p");
-    para.id = command.participantId;
-    para.innerText = command.participantId;
+    const id = command.participantId;
+    para.id = id;
+    const chat1 = chat.state.participantColor;
+    para.style.backgroundColor = chat1[command.participantId];
+    para.className = "listName";
+    para.innerText = id;
     list.appendChild(para);
   }
-
-  chat.addParticipant(command);
 });
 
 socket.on("remove-participant", (command) => {
@@ -83,12 +104,15 @@ socket.on("send-message", (command) => {
   console.log(`Receiving ${command.type} -> ${command.participantId}`);
 
   const para = document.createElement("div");
-  const para2 = document.createElement("div");
+  const para2 = document.createElement("p");
+
   if (participantId == command.participantId) {
     para2.className = "my-messages";
     para.className = "my-message";
   } else {
     para.className = "your-message";
+    para2.style.backgroundColor =
+      chat.state.participantColor[command.participantId];
     para2.className = "message";
   }
   para2.innerText = command.command;

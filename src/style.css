@@ -55,7 +55,6 @@
   border-radius: 10px;
   margin-left: 5px;
   padding: 3px;
-  background-color: lightblue;
   border: 1px solid white;
   border-radius: 10px;
   word-break: normal;
@@ -88,4 +87,9 @@
 }
 .teto {
   height: 1vh;
+}
+.listName {
+  width: 50%;
+  border-radius: 10px;
+  margin: 5px;
 }

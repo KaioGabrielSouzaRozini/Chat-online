@@ -1,5 +1,6 @@
 export default function createChat() {
   const state = {
+    participantName: {},
     participantIds: [],
     participantColor: {},
     chat: [],
@@ -12,17 +13,26 @@ export default function createChat() {
 
   function addParticipant(command) {
     const participantId = command.participantId;
+
+    const letters = "456789ABCDEF";
+    let color = "#";
+
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 12)];
+    }
     state.participantIds.push(participantId);
+    state.participantColor[participantId] = color;
 
     notifyAll({
       type: "add-participant",
       participantId: participantId,
+      participantColor: color,
     });
   }
 
   function removeParticipant(command) {
     const participantId = command.participantId;
-    delete state.participantIds[participantId];
+    delete state.participantColor[participantId];
 
     state.participantIds.forEach((element, index) => {
       if (element == participantId) {
@@ -47,7 +57,7 @@ export default function createChat() {
   }
 
   function sendMessage(command, id) {
-    state.chat.push(command);
+    state.chat.push([id, command]);
     if (state.chat.length > 50) {
       state.chat.shift();
     }
@@ -58,19 +68,6 @@ export default function createChat() {
     });
   }
 
-  function colors(command) {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-
-    state.participantColor[command] = {
-      color: color,
-    };
-  }
-
   return {
     sendMessage,
     addParticipant,
@@ -78,7 +75,6 @@ export default function createChat() {
     setState,
     subscribe,
     notifyAll,
-    colors,
     state,
   };
 }
