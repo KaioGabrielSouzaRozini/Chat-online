@@ -37,11 +37,6 @@ socket.on("setup", (state) => {
     if (element != participantId) {
       const para = document.createElement("p");
       para.id = element;
-      console.log(
-        element,
-        chat.state.participantColor,
-        chat.state.participantColor[element]
-      );
       para.style.backgroundColor = chat.state.participantColor[element];
       para.innerText = element;
       para.className = "listName";
