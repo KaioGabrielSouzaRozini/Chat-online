@@ -4,17 +4,27 @@ const list = document.getElementById("participants");
 const button = document.getElementById("send");
 const chatMessages = document.getElementById("chat");
 
-var nome = window.prompt("Nome", "");
+let verifier = true;
+let nome = "";
+while (verifier) {
+  nome = window.prompt("Nome", "").trim();
+  if (nome != "" && nome.length < 21) {
+    verifier = false;
+  }
+}
 sessionStorage.setItem("name", nome);
 
 button.addEventListener("click", () => {
-  const participantId = socket.id;
-  socket.emit(
-    "send-message",
-    document.getElementById("text").value,
-    participantId
-  );
-  document.getElementById("text").value = "";
+  let message = document.getElementById("text").value.trim();
+  if (message != "") {
+    const participantId = socket.id;
+    socket.emit(
+      "send-message",
+      document.getElementById("text").value,
+      participantId
+    );
+    document.getElementById("text").value = "";
+  }
 });
 
 text.addEventListener("keypress", function (event) {
@@ -72,6 +82,7 @@ socket.on("setup", (state) => {
     para.appendChild(para2);
     chatMessages.appendChild(para);
   });
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
 socket.on("add-participant", (command) => {
@@ -115,4 +126,5 @@ socket.on("send-message", (command) => {
   para2.innerText = command.command;
   para.appendChild(para2);
   chatMessages.appendChild(para);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 });
