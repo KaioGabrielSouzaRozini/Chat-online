@@ -4,8 +4,10 @@ const list = document.getElementById("participants");
 const button = document.getElementById("send");
 const chatMessages = document.getElementById("chat");
 
+var nome = window.prompt("Nome", "");
+sessionStorage.setItem("name", nome);
+
 button.addEventListener("click", () => {
-  console.log(`participant send-message`);
   const participantId = socket.id;
   socket.emit(
     "send-message",
@@ -24,10 +26,14 @@ text.addEventListener("keypress", function (event) {
 const chat = createChat();
 
 const socket = io();
-
+let participantId = "";
 socket.on("connect", () => {
-  const participantId = socket.id;
-  console.log(`participant connected on client with id; ${participantId}`);
+  participantId = socket.id;
+});
+
+socket.on("new-participant", (id) => {
+  if (id !== participantId) return;
+  socket.emit("create-participant", { id, nome });
 });
 
 socket.on("setup", (state) => {
@@ -38,14 +44,14 @@ socket.on("setup", (state) => {
       const para = document.createElement("p");
       para.id = element;
       para.style.backgroundColor = chat.state.participantColor[element];
-      para.innerText = element;
+      para.innerText = chat.state.participantName[element];
       para.className = "listName";
       list.appendChild(para);
     } else if (element == participantId) {
       const para = document.createElement("p");
       para.id = element;
       para.style.backgroundColor = "lightgreen";
-      para.innerText = element;
+      para.innerText = chat.state.participantName[element];
       para.className = "listName";
       list.appendChild(para);
     }
@@ -70,7 +76,6 @@ socket.on("setup", (state) => {
 
 socket.on("add-participant", (command) => {
   const participantId = socket.id;
-  console.log(`Receiving ${command.type} -> ${command.participantId}`);
 
   chat.addParticipant(command);
 
@@ -81,14 +86,12 @@ socket.on("add-participant", (command) => {
     const chat1 = chat.state.participantColor;
     para.style.backgroundColor = chat1[command.participantId];
     para.className = "listName";
-    para.innerText = id;
+    para.innerText = command.participantNome;
     list.appendChild(para);
   }
 });
 
 socket.on("remove-participant", (command) => {
-  console.log(`Receiving ${command.type} -> ${command.participantId}`);
-
   const removeparticipant = document.getElementById(command.participantId);
   list.removeChild(removeparticipant);
 
@@ -96,7 +99,6 @@ socket.on("remove-participant", (command) => {
 });
 socket.on("send-message", (command) => {
   const participantId = socket.id;
-  console.log(`Receiving ${command.type} -> ${command.participantId}`);
 
   const para = document.createElement("div");
   const para2 = document.createElement("p");

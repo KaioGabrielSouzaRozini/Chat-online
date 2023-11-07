@@ -12,17 +12,21 @@ app.use(express.static("src"));
 const chat = createChat();
 
 chat.subscribe((command) => {
-  console.log(`Emitting ${command.type}`);
   sockets.emit(command.type, command);
 });
 
 sockets.on("connection", (socket) => {
   const participantId = socket.id;
-  console.log(`participant connected on server with id: ${participantId}`);
 
-  chat.addParticipant({ participantId: participantId });
+  socket.emit("new-participant", participantId);
 
-  socket.emit("setup", chat.state);
+  socket.on("create-participant", (participant) => {
+    chat.addParticipant({
+      participantId: participant.id,
+      participantName: participant.nome,
+    });
+    socket.emit("setup", chat.state);
+  });
 
   socket.on("disconnect", () => {
     chat.removeParticipant({ participantId: participantId });

@@ -13,6 +13,7 @@ export default function createChat() {
 
   function addParticipant(command) {
     const participantId = command.participantId;
+    const participantNome = command.participantName;
 
     const letters = "456789ABCDEF";
     let color = "#";
@@ -22,11 +23,12 @@ export default function createChat() {
     }
     state.participantIds.push(participantId);
     state.participantColor[participantId] = color;
-
+    state.participantName[participantId] = participantNome;
     notifyAll({
       type: "add-participant",
       participantId: participantId,
       participantColor: color,
+      participantNome: participantNome,
     });
   }
 
