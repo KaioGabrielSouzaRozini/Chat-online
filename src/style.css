@@ -17,15 +17,22 @@
   background: lightgrey;
   border-radius: 10px;
 }
-.all {
+.big-all{
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
+  background-color: #2c2c35;
+}
+.all {
+  width: 80%;
   height: 100vh;
   display: flex;
 }
 .participants-all {
   width: 30%;
   height: 100vh;
-  background-color: #eee;
+  background-color: #666079;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,12 +42,12 @@
   height: 95%;
   background-color: white;
   border: 1px solid black;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 .chat-all {
   width: 70%;
   height: 100vh;
-  background-color: #eee;
+  background-color: #666079;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,7 +58,7 @@
   height: 90%;
   background-color: white;
   border: 1px solid black;
-  border-radius: 10px;
+  border-radius: 7px;
   overflow: auto;
 }
 .send-messages {
@@ -70,16 +77,11 @@
 .send {
   margin: 8px 0;
   width: 10vh;
-  transition-duration: 0.4s;
   font-weight: bold;
 }
 
-.send:hover {
-  background-color: lightgreen; /* Green */
-  color: white;
-}
+
 .message {
-  border-radius: 10px;
   margin-left: 5px;
   padding: 7px;
   border: 1px solid white;
@@ -126,10 +128,14 @@
   .text {
     width: 50vh;
   }
+  .all{
+    width: 100%;
+  }
 }
 @media (max-width: 900px) {
   .text {
     width: 20vh;
     height: 3vh;
   }
+  
 }
